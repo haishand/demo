@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.User;
+import com.example.demo.enums.ResultEnum;
+import com.example.demo.exception.UserException;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +28,16 @@ public class UserService {
         userRepository.save(user2);
     }
 
-    public void getAddress(Integer id) throws Exception {
+    public void getAddress(Integer id) throws UserException {
         User user = userRepository.findOne(id);
-        if(user.getAddress().contains("峨眉")) {
-            throw new Exception("峨嵋派");
+        if(user.getAddress().contains("火焰")) {
+            throw new UserException(ResultEnum.NIUMOWANG);
         }else {
-            throw new Exception("无门无派");
+            throw new UserException(ResultEnum.EMEIPAI);
         }
+    }
+
+    public User findOne(Integer id) {
+        return userRepository.findOne(id);
     }
 }
