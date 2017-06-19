@@ -3,6 +3,8 @@ package com.example.demo.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 /**
@@ -13,9 +15,13 @@ public class User {
     @Id
     @GeneratedValue
     Integer id;
-    
+
+    @NotNull(message = "用户名不能为空")
     String username;
     Date birthday;
+
+    @NotNull(message = "性别不能为空")
+    @Pattern(regexp = "[男女]", message = "性别只能为男或女")
     String sex;
     String address;
 
@@ -60,5 +66,16 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", birthday=" + birthday +
+                ", sex='" + sex + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

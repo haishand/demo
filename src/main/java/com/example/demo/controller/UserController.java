@@ -4,8 +4,10 @@ import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +30,11 @@ public class UserController {
     }
 
     @PostMapping(value="/add")
-    public User add(User user) {
+    public User add(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return null;
+        }
         return userRepository.save(user);
     }
 
