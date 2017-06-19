@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Result;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -30,12 +31,19 @@ public class UserController {
     }
 
     @PostMapping(value="/add")
-    public User add(@Valid User user, BindingResult result) {
-        if(result.hasErrors()) {
-            System.out.println(result.getFieldError().getDefaultMessage());
-            return null;
+    public Result add(@Valid User user, BindingResult bindingResult) {
+        Result result = new Result();
+        if(bindingResult.hasErrors()) {
+            result.setCode(1);
+            result.setMsg(bindingResult.getFieldError().getDefaultMessage());
+            result.setData(null);
+        }else {
+            User data = userRepository.save(user);
+            result.setCode(0);
+            result.setMsg("成功");
+            result.setData(data);
         }
-        return userRepository.save(user);
+        return result;
     }
 
     @GetMapping(value="/search/{id}")
