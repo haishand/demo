@@ -4,6 +4,7 @@ import com.example.demo.domain.Result;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +33,11 @@ public class UserController {
 
     @PostMapping(value="/add")
     public Result add(@Valid User user, BindingResult bindingResult) {
-        Result result = new Result();
+        Result result;
         if(bindingResult.hasErrors()) {
-            result.setCode(1);
-            result.setMsg(bindingResult.getFieldError().getDefaultMessage());
-            result.setData(null);
+            result = ResultUtil.fail(1, bindingResult.getFieldError().getDefaultMessage());
         }else {
-            User data = userRepository.save(user);
-            result.setCode(0);
-            result.setMsg("成功");
-            result.setData(data);
+            result = ResultUtil.success(user);
         }
         return result;
     }
@@ -74,5 +70,10 @@ public class UserController {
     @PutMapping("/addtwo")
     public void addTwo() {
         userService.addTwo();
+    }
+
+    @GetMapping(value = "/getAddress/{id}")
+    public void getAddress(@PathVariable("id") Integer id) throws Exception {
+        userService.getAddress(id);
     }
 }

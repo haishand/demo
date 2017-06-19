@@ -25,4 +25,13 @@ public class UserService {
         user2.setAddress("bb222");
         userRepository.save(user2);
     }
+
+    public void getAddress(Integer id) throws Exception {
+        User user = userRepository.findOne(id);
+        if(user.getAddress().contains("峨眉")) {
+            throw new Exception("峨嵋派");
+        }else {
+            throw new Exception("无门无派");
+        }
+    }
 }
